@@ -114,6 +114,13 @@ const server = createServer(async (req, res) => {
   const path = decodeURIComponent(url.pathname);
   try {
     if (path.startsWith('/api/')) {
+      // Only this app may call the API: the Host check blocks DNS rebinding, and the
+      // Origin + JSON checks stop other websites from triggering paid scrapes (CSRF).
+      const allowed = [`localhost:${PORT}`, `127.0.0.1:${PORT}`];
+      const origin = req.headers.origin;
+      const badOrigin = origin && !allowed.some(a => origin === `http://${a}`);
+      const badWrite = req.method !== 'GET' && !String(req.headers['content-type']).startsWith('application/json');
+      if (!allowed.includes(req.headers.host) || badOrigin || badWrite) return json(res, { error: 'Forbidden' }, 403);
       const videoMatch = req.method === 'GET' && path.match(/^\/api\/ads\/(\d+)\/video$/);
       if (videoMatch) return serveFile(req, res, await ensureVideo(videoMatch[1]));
       for (const [method, re, fn] of routes) {
