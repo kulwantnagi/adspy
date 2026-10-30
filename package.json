@@ -1,0 +1,12 @@
+{
+  "name": "adspy",
+  "version": "1.0.0",
+  "description": "Track competitor Facebook/Instagram ads: rankings, landing pages, launches, hooks and AI breakdowns.",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js",
+    "import-sample": "node --disable-warning=ExperimentalWarning scripts/import-file.js"
+  }
+}

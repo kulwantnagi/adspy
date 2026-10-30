@@ -1,0 +1,9 @@
+# Local data: database, cached images/videos, logs
+data/*
+!data/sample-zapier.json
+# Whisper speech model (148 MB) - see README to download
+models/
+.env
+node_modules/
+.DS_Store
+.playwright-mcp/
